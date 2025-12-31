@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Space | Betuu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFF9F0 0%, #FFF5E6 50%, #FFFBF5 100%);
+            font-family: 'Quicksand', sans-serif;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .greeting {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: #5D4E42;
+            margin-bottom: 10px;
+        }
+
+        .subgreeting {
+            color: #8B7B6E;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255, 220, 180, 0.3);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            animation: cardIn 0.6s ease-out backwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #E8C9A0, #D4A574, #C9956C);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FFF5E6 0%, #FFE8D6 100%);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #5D4E42;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: #8B7B6E;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .card-hint {
+            position: absolute;
+            bottom: 20px;
+            right: 25px;
+            color: #C9956C;
+            font-size: 13px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .card-hint {
+            opacity: 1;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 60px;
+            color: #B5A89C;
+            font-size: 13px;
+            animation: fadeIn 1s ease-out 0.8s backwards;
+        }
+
+        .footer-note span {
+            color: #C9956C;
+        }
+
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.8);
+            border: 1px solid #E8D9C8;
+            border-radius: 20px;
+            color: #8B7B6E;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #5D4E42;
+        }
+
+        @media (max-width: 768px) {
+            .greeting { font-size: 28px; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .card { padding: 28px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <button class="logout-btn" onclick="logout()">Leave Safely ↗</button>
+
+    <div class="container">
+        <header>
+            <h1 class="greeting">Haaanjiii Betuuu Pikshii Chona Kakaaaaaa 💫</h1>
+            <p class="subgreeting">This is our little world. Take your time. Explore what calls you. And this website will be our place now</p>
+        </header>
+
+        <div class="cards-grid">
+            <a href="gallery.html" class="card">
+                <div class="card-icon">📷</div>
+                <h2 class="card-title">Our Gallery</h2>
+                <p class="card-desc">25 moments frozen in time. Each one a reason to smile.</p>
+                <span class="card-hint">tap to explore →</span>
+            </a>
+
+            <a href="timeline.html" class="card">
+                <div class="card-icon">✨</div>
+                <h2 class="card-title">Our Timeline</h2>
+                <p class="card-desc">From January to December — the story of our 2025.</p>
+                <span class="card-hint">tap to explore →</span>
+            </a>
+
+            <a href="letters.html" class="card">
+                <div class="card-icon">💌</div>
+                <h2 class="card-title">Letters For You</h2>
+                <p class="card-desc">Words I wrote when missing you felt too heavy to hold.</p>
+                <span class="card-hint">tap to explore →</span>
+            </a>
+
+            <a href="message2026.html" class="card">
+                <div class="card-icon">🌅</div>
+                <h2 class="card-title">To 2026</h2>
+                <p class="card-desc">A new chapter. New promises. Same us.</p>
+                <span class="card-hint">tap to explore →</span>
+            </a>
+
+            <a href="#" class="card" style="background: linear-gradient(135deg, rgba(255,248,240,0.95), rgba(255,240,225,0.95));">
+                <div class="card-icon">🎵</div>
+                <h2 class="card-title">Our Song</h2>
+                <p class="card-desc">Noormahal — playing softly in the background of us.</p>
+                <span class="card-hint">tap to play →</span>
+            </a>
+        </div>
+
+        <p class="footer-note">Made with all my heart, only for <span>you</span> 💛</p>
+    </div>
+
+    <button class="music-toggle" id="musicBtn" title="Toggle Music">🎵</button>
+
+    <audio id="bgMusic" loop>
+        <source src="audio/noormahal.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Auth check
+        if(sessionStorage.getItem('authenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Auto logout after 5 min inactivity
+        let lastActivity = Date.now();
+        
+        function checkInactivity() {
+            if(Date.now() - lastActivity > 5 * 60 * 1000) {
+                logout();
+            }
+        }
+        
+        setInterval(checkInactivity, 10000);
+        
+        document.addEventListener('mousemove', () => lastActivity = Date.now());
+        document.addEventListener('click', () => lastActivity = Date.now());
+        document.addEventListener('keypress', () => lastActivity = Date.now());
+        document.addEventListener('scroll', () => lastActivity = Date.now());
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // Music
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = localStorage.getItem('musicPlaying') === 'true';
+
+        if(isPlaying) {
+            music.play().catch(() => {});
+            musicBtn.textContent = '🔊';
+        }
+
+        musicBtn.addEventListener('click', () => {
+            if(isPlaying) {
+                music.pause();
+                musicBtn.textContent = '🎵';
+                localStorage.setItem('musicPlaying', 'false');
+            } else {
+                music.play();
+                musicBtn.textContent = '🔊';
+                localStorage.setItem('musicPlaying', 'true');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Song card special behavior
+        document.querySelector('.card:last-child').addEventListener('click', (e) => {
+            e.preventDefault();
+            if(!isPlaying) {
+                music.play();
+                musicBtn.textContent = '🔊';
+                localStorage.setItem('musicPlaying', 'true');
+                isPlaying = true;
+            }
+        });
+    </script>
+</body>
+</html>

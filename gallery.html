@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Gallery | Betuu</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFF9F0, #FFF5E6);
+            font-family: 'Quicksand', sans-serif;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            text-decoration: none;
+            color: #8B7B6E;
+            font-size: 14px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            color: #5D4E42;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #8B7B6E;
+            font-size: 16px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .photo-card {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #F6EFE6;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-card.empty::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #EFE7DD, #F7F1EA);
+        }
+
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 18px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.55));
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-card:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-caption {
+            font-size: 14px;
+        }
+
+        .heart-reaction {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .photo-card:hover .heart-reaction {
+            opacity: 1;
+        }
+
+        .heart-reaction.liked {
+            background: #FFE4E4;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 12px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            font-size: 32px;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <a href="dashboard.html" class="back-btn">← Back to our space</a>
+
+    <header>
+        <h1>Our 2025 📷</h1>
+        <p class="subtitle">22 pieces of us  one for the keepers, quietly held here 🪔✨🤍🙏</p>
+    </header>
+
+    <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">×</span>
+    <img id="lightboxImg">
+</div>
+
+<script>
+    /* AUTH */
+    if (sessionStorage.getItem('authenticated') !== 'true') {
+        window.location.href = 'index.html';
+    }
+
+    /* AUTO LOGOUT */
+    let lastActivity = Date.now();
+    setInterval(() => {
+        if (Date.now() - lastActivity > 5 * 60 * 1000) {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+    }, 10000);
+    ['mousemove','click','scroll','keydown'].forEach(e =>
+        document.addEventListener(e, () => lastActivity = Date.now())
+    );
+
+    const gallery = document.getElementById('gallery');
+    const captions = [
+        "My first birthday with YOUU❤️","That 1 week LDR🚅","Hi Myself GAMLA PANDEY🪴","नन्हे-मुन्ने बच्चाaas🐣✨🤍","My favorite view 😌🤍✨",
+        "धूम मचाले धूम मचाले धूम…🏍️🔥","Buraaaahhhh🪯🔥Paripreet Singh reporting 🫡🔥","रुला दिया ना बेचारी को 🥺💔","RAID 2 dekhne gaye the दिल पर रेड पड़ गई 🥲💔","Always choosing you🤍",
+        "I love the Spiritually Happy youuu 🕉️✨🌸मेरी लक्ष्मी 🌼💛","Black magic ✨🖤","Better thrower than Neeraj Chopra 🥲","Yummy affairs 😋🥟","MANGOish OREO🥭🍦🍫",
+        "The night before a lovely morning 🔥🌙💋🤍✨","The morning after the lovely night 🌙💞☀️🤍","Love at sunrise, Kashi 🤍🌅","Goodbyes after a memorable trip always hit hard 💔✨","Mera SONA KAKA gone real 😴💤","Birthday 2k25 🎉🎊✨🥂🎶🎆", "Eyes ahead,hearts aligned; Rising TOGETHER into 2026💛🧿✨","Jai Siyaram 🚩🙏💛✨","....","...."
+    ];
+
+    for (let i = 1; i <= 25; i++) {
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+
+        const img = document.createElement('img');
+        img.src = `photos/photo${i}.jpg`;
+
+        img.onerror = () => {
+            card.classList.add('empty');
+            img.remove();
+        };
+
+        card.appendChild(img);
+
+        const heart = document.createElement('button');
+        heart.className = 'heart-reaction';
+        heart.textContent = localStorage.getItem(`photo_${i}_liked`) === 'true' ? '❤️' : '🤍';
+        if (heart.textContent === '❤️') heart.classList.add('liked');
+
+        heart.onclick = (e) => {
+            e.stopPropagation();
+            const liked = heart.classList.toggle('liked');
+            heart.textContent = liked ? '❤️' : '🤍';
+            localStorage.setItem(`photo_${i}_liked`, liked);
+        };
+
+        const overlay = document.createElement('div');
+        overlay.className = 'photo-overlay';
+        overlay.innerHTML = `<p class="photo-caption">${captions[i-1]}</p>`;
+
+        card.appendChild(heart);
+        card.appendChild(overlay);
+
+        card.onclick = () => {
+            if (!card.classList.contains('empty')) {
+                openLightbox(i);
+            }
+        };
+
+        gallery.appendChild(card);
+    }
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    function openLightbox(i) {
+        lightboxImg.src = `photos/photo${i}.jpg`;
+        lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+    }
+
+    lightbox.onclick = e => {
+        if (e.target === lightbox) closeLightbox();
+    };
+</script>
+
+</body>
+</html>

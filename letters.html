@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Handwritten Letters | Betuu</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #FFF9F0, #FFF4E3);
+    font-family: 'Quicksand', sans-serif;
+    padding: 40px 20px;
+    color: #4A4035;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-bottom: 30px;
+    text-decoration: none;
+    color: #8B7B6E;
+    font-size: 14px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 16px;
+    color: #8B7B6E;
+}
+
+/* Letters Layout */
+.letters-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+/* Letter Card */
+.letter-card {
+    background: #FFFDF8;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.letter-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+}
+
+.letter-card img {
+    width: 100%;
+    border-radius: 6px;
+    display: block;
+}
+
+/* Caption */
+.caption {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 14px;
+    color: #8B7B6E;
+    font-style: italic;
+}
+
+/* MINI LETTER BOX */
+.mini-letter {
+    margin-top: 70px;
+    background: linear-gradient(135deg, #FFF8E6, #FFF1CC);
+    border-radius: 18px;
+    padding: 40px 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+.mini-letter::before {
+    content: "💛 🧿 💛 🧿 💛 🧿 💛 🧿 💛";
+    position: absolute;
+    top: 10px;
+    left: -10px;
+    right: -10px;
+    font-size: 22px;
+    opacity: 0.35;
+}
+
+.mini-letter::after {
+    content: "🧿 💛 🧿 💛 🧿 💛 🧿 💛 🧿";
+    position: absolute;
+    bottom: 10px;
+    left: -10px;
+    right: -10px;
+    font-size: 22px;
+    opacity: 0.35;
+}
+
+.mini-letter p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 1.8;
+    color: #4A4035;
+}
+
+.mini-letter .highlight {
+    display: block;
+    margin-top: 15px;
+    font-size: 32px;
+    font-weight: 600;
+    color: #C9956C;
+}
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: 95%;
+    max-height: 95%;
+    border-radius: 8px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 32px;
+    color: #fff;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <a href="dashboard.html" class="back-btn">← Back to our space</a>
+
+    <header>
+        <h1>My Letters to You 💛</h1>
+        <p>Written slowly. With honesty. With hope for 2026.</p>
+    </header>
+
+    <div class="letters-wrapper">
+        <div class="letter-card" onclick="openLightbox('images/letter1.jpg')">
+            <img src="images/letter1.jpg" alt="Handwritten Letter Page 1">
+            <div class="caption">A page I wrote when silence taught me things.</div>
+        </div>
+
+        <div class="letter-card" onclick="openLightbox('images/letter2.jpg')">
+            <img src="images/letter2.jpg" alt="Handwritten Letter Page 2">
+            <div class="caption">Where I chose peace, stability, and us.</div>
+        </div>
+    </div>
+
+    <!-- MINI LETTER -->
+    <div class="mini-letter">
+        <p>
+            Likhna to bohot kuch aur tha, lekin<br>
+            जिस साल ने हमें थकाया,<br>
+            क्यों उस साल को याद करें।<br>
+            आगे ज़िंदगी बुला रही है,<br>
+            <span class="highlight">आओ उसके पास, साथ चलें 💛💛🧿💛🧿💛</span>
+        </p>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">×</span>
+    <img id="lightbox-img" src="">
+</div>
+
+<script>
+/* AUTH CHECK */
+if (sessionStorage.getItem('authenticated') !== 'true') {
+    window.location.href = 'index.html';
+}
+
+/* AUTO LOGOUT */
+let lastActivity = Date.now();
+setInterval(() => {
+    if (Date.now() - lastActivity > 5 * 60 * 1000) {
+        sessionStorage.clear();
+        window.location.href = 'index.html';
+    }
+}, 10000);
+
+['mousemove','click','scroll','keydown'].forEach(e =>
+    document.addEventListener(e, () => lastActivity = Date.now())
+);
+
+/* LIGHTBOX */
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letters For You | Betuu</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600&family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+min-height:100vh;
+background:linear-gradient(180deg,#FFF9F0,#FFF5E6);
+font-family:'Quicksand',sans-serif;
+padding:40px 20px;
+}
+
+.container{max-width:800px;margin:0 auto}
+
+.back-btn{
+color:#8B7B6E;
+text-decoration:none;
+font-size:14px;
+display:inline-block;
+margin-bottom:30px;
+}
+
+header{text-align:center;margin-bottom:50px}
+
+h1{
+font-family:'Cormorant Garamond',serif;
+font-size:42px;
+color:#5D4E42;
+margin-bottom:12px;
+}
+
+.subtitle{color:#8B7B6E}
+
+.envelope{
+position:relative;
+background:linear-gradient(135deg,#FFF8F0,#FFF0E0);
+border-radius:8px;
+padding:25px;
+cursor:pointer;
+box-shadow:0 5px 20px rgba(0,0,0,.06);
+margin-bottom:40px;
+}
+
+.envelope::before{
+content:'';
+position:absolute;
+top:0;left:0;right:0;
+height:60px;
+background:linear-gradient(135deg,#E8D4C0,#DFC8B0);
+clip-path:polygon(0 0,50% 100%,100% 0);
+}
+
+.envelope-content{padding-top:50px}
+
+.envelope-label{
+background:linear-gradient(135deg,#E8C9A0,#D4A574);
+padding:6px 16px;
+border-radius:15px;
+font-size:12px;
+font-weight:600;
+}
+
+.envelope-title{
+font-family:'Cormorant Garamond',serif;
+font-size:24px;
+margin:10px 0;
+}
+
+.envelope-preview{
+font-style:italic;
+color:#8B7B6E;
+font-size:14px;
+}
+
+/* MODAL */
+.letter-modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+padding:20px;
+}
+
+.letter-modal.active{display:flex}
+
+.letter-paper{
+background:#FFFDF8;
+max-width:650px;
+width:100%;
+padding:45px;
+border-radius:4px;
+position:relative;
+max-height:85vh;
+overflow-y:auto;
+}
+
+.letter-close{
+position:absolute;
+top:15px;
+right:15px;
+border:none;
+background:#F5EDE5;
+width:34px;
+height:34px;
+border-radius:50%;
+cursor:pointer;
+}
+
+.letter-greeting{
+font-family:'Dancing Script',cursive;
+font-size:32px;
+color:#C9956C;
+margin-bottom:25px;
+}
+
+.letter-body{
+font-family:'Cormorant Garamond',serif;
+font-size:18px;
+line-height:2;
+color:#4A4035;
+}
+
+.signature{
+margin-top:30px;
+text-align:right;
+font-family:'Dancing Script',cursive;
+font-size:36px;
+color:#C9956C;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<a href="dashboard.html" class="back-btn">← Back to our space</a>
+
+<header>
+<h1>Letters For You 💌</h1>
+<p class="subtitle">Many more DIGITAL LETTERS will be added here.... </p>
+</header>
+
+<!-- MAIN LETTER -->
+<div class="envelope" onclick="openLetter('main')">
+<div class="envelope-content">
+<span class="envelope-label">💕 Main Letter</span>
+<h3 class="envelope-title">For Youu</h3>
+<p class="envelope-preview">“There are things I’ve wanted to say for so long…”</p>
+</div>
+</div>
+
+</div>
+
+<!-- MAIN LETTER MODAL -->
+<div class="letter-modal" id="modal-main">
+<div class="letter-paper">
+<button class="letter-close" onclick="closeLetter('main')">×</button>
+
+<h2 class="letter-greeting">O Meri Jaan,</h2>
+
+<div class="letter-body">
+<p>
+Betu, I know this year has been hard on you because of me, and I am truly sorry for that. More than words, I am sorry from my body — for letting my emotions spill onto you and for burdening you when you never deserved that weight. I never meant to make things heavy for you, and I know you don’t deserve this version of me.
+</p>
+
+<p>
+But I look ahead to 2026 🌅 as a better me — not just for me, but for you and for <strong>US</strong> 💛🧿. <strong>HUMAARE LIYE</strong> 💛🧿  
+I love you 💛🧿.  
+Happy New Year, Betu 💛🧿
+</p>
+
+<div class="signature">Yours, Parikshit 💛🧿</div>
+</div>
+</div>
+</div>
+
+<script>
+if(sessionStorage.getItem('authenticated')!=='true'){
+window.location.href='index.html';
+}
+function openLetter(id){
+document.getElementById('modal-'+id).classList.add('active');
+document.body.style.overflow='hidden';
+}
+function closeLetter(id){
+document.getElementById('modal-'+id).classList.remove('active');
+document.body.style.overflow='auto';
+}
+</script>
+
+</body>
+</html>

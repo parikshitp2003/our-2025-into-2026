@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Home, Betuu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFF9F0 0%, #FFF5E6 100%);
+            overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .photos-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .floating-photo {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #FFF 0%, #F9F3EC 100%);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: floatPhoto 20s infinite ease-in-out;
+            border: 3px solid white;
+        }
+
+        .floating-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .floating-photo.placeholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            background: linear-gradient(135deg, #FFE8D6 0%, #FFD4B8 100%);
+        }
+
+        @keyframes floatPhoto {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            25% { transform: translateY(-20px) rotate(2deg); }
+            50% { transform: translateY(-10px) rotate(-2deg); }
+            75% { transform: translateY(-25px) rotate(3deg); }
+        }
+
+        .welcome-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            padding: 50px 60px;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 220, 180, 0.4);
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .welcome-content h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 600;
+            color: #5D4E42;
+            margin-bottom: 15px;
+        }
+
+        .welcome-content p {
+            color: #8B7B6E;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: #C9956C;
+            font-weight: 500;
+        }
+
+        .enter-dashboard {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #E8C9A0 0%, #D4A574 100%);
+            color: #5D4E42;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .enter-dashboard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(212, 165, 116, 0.4);
+        }
+
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="photos-container" id="photosContainer"></div>
+
+    <div class="welcome-content">
+        <h1>Welcome Home, Betuu</h1>
+        <p>This little corner of the internet is <span class="highlight">only yours</span>.</p>
+        <p>A year of us. A year of firsts. A year of <span class="highlight">you and me</span>.</p>
+        <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">2025 was roller coaster. 2026 will be as peaceful as Varanasi Ghats.</p>
+        <a href="dashboard.html" class="enter-dashboard">Step Inside →</a>
+    </div>
+
+    <button class="music-toggle" id="musicBtn" title="Toggle Music">🎵</button>
+
+    <audio id="bgMusic" loop>
+        <source src="audio/noormahal.mp3" type="audio/mpeg">
+        <!-- Fallback: Add your audio source here -->
+    </audio>
+
+    <script>
+        // Auth check
+        if(sessionStorage.getItem('authenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Auto logout after 5 minutes
+        const loginTime = parseInt(sessionStorage.getItem('loginTime') || Date.now());
+        setInterval(() => {
+            if(Date.now() - loginTime > 5 * 60 * 1000) {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }, 10000);
+
+        // Reset timer on activity
+        document.addEventListener('click', () => {
+            sessionStorage.setItem('loginTime', Date.now());
+        });
+
+        // Create floating photos
+        const container = document.getElementById('photosContainer');
+        const positions = [
+            {top: '5%', left: '5%'}, {top: '8%', left: '25%'}, {top: '3%', left: '50%'},
+            {top: '10%', left: '75%'}, {top: '5%', left: '90%'}, {top: '30%', left: '3%'},
+            {top: '35%', left: '85%'}, {top: '55%', left: '5%'}, {top: '60%', left: '88%'},
+            {top: '75%', left: '8%'}, {top: '80%', left: '30%'}, {top: '78%', left: '55%'},
+            {top: '82%', left: '78%'}, {top: '70%', left: '92%'}, {top: '25%', left: '92%'}
+        ];
+
+        const emojis = ['💕', '🌸', '✨', '🦋', '💫', '🌷', '💝', '🌺', '💖', '🌼', '💗', '🌹', '💓', '🏵️', '💞'];
+
+        positions.forEach((pos, i) => {
+            const photo = document.createElement('div');
+            photo.className = 'floating-photo placeholder';
+            photo.style.top = pos.top;
+            photo.style.left = pos.left;
+            photo.style.animationDelay = (i * 0.5) + 's';
+            photo.textContent = emojis[i];
+            
+            // When you add real photos, use this instead:
+            // photo.innerHTML = `<img src="photos/photo${i+1}.jpg" alt="Memory ${i+1}">`;
+            
+            container.appendChild(photo);
+        });
+
+        // Music toggle
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if(isPlaying) {
+                music.pause();
+                musicBtn.textContent = '🎵';
+            } else {
+                music.play();
+                musicBtn.textContent = '🔊';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Timeline | Betuu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFF9F0 0%, #FFF5E6 100%);
+            font-family: 'Quicksand', sans-serif;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #8B7B6E;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #5D4E42;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 600;
+            color: #5D4E42;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #8B7B6E;
+            font-size: 16px;
+        }
+
+        .year-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #E8C9A0, #D4A574);
+            color: #5D4E42;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #E8C9A0, #D4A574, #C9956C);
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 3px solid #D4A574;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item.special::before {
+            background: linear-gradient(135deg, #E8C9A0, #D4A574);
+            border-color: #C9956C;
+            width: 20px;
+            height: 20px;
+            left: -38px;
+            top: 6px;
+        }
+
+        .timeline-content {
+            background: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255, 220, 180, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-month {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #C9956C;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #5D4E42;
+            margin-bottom: 10px;
+        }
+
+        .timeline-desc {
+            color: #8B7B6E;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .timeline-emoji {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .timeline-detail {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #F0E6DC;
+            color: #6B5D52;
+            font-size: 14px;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .timeline-content.expanded .timeline-detail {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .tap-hint {
+            font-size: 12px;
+            color: #B5A89C;
+            margin-top: 12px;
+        }
+
+        .intro-note {
+            background: linear-gradient(135deg, rgba(232, 201, 160, 0.2), rgba(212, 165, 116, 0.15));
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 50px;
+            border: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .intro-note p {
+            color: #6B5D52;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .intro-note .highlight {
+            color: #C9956C;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .timeline { padding-left: 30px; }
+            .timeline-item::before { left: -26px; }
+            .timeline-item.special::before { left: -28px; }
+            .timeline-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="dashboard.html" class="back-btn">← Back to our space</a>
+
+        <header>
+            <span class="year-badge">2025</span>
+            <h1>Our वर्ष 2025 ✨</h1>
+            <p class="subtitle">Every month was a roller coaster but we sat together holding US💛🧿</p>
+        </header>
+
+        <div class="intro-note">
+            <p>2025 was the <span class="highlight">first year we stepped into together</span>.<br>
+            Here's how we made it unforgettable, Betuu. 💛</p>
+        </div>
+
+        <div class="timeline">
+            <!-- January -->
+            <div class="timeline-item special" style="animation-delay: 0.1s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">🌙</div>
+                    <div class="timeline-month">January</div>
+                    <div class="timeline-title">Our First Midnight Sneakouts</div>
+                    <div class="timeline-desc">
+1st January — Pracheen Hanuman Mandir 🛕🙏, feeding dogs 🐶❤️, then Chandreshwar Mandir 🕉️✨and Mahalaxmi ki kachori & dhokla 😋🥟💛<br>
+
+                        17th January — With Burger Singh ke burgers and fries🍔🍟<br>
+                        19th January — Parikshit's special Steamy Maggie and later steamy moments🍜😄💖
+                    </div>
+                    <div class="timeline-detail">
+                        Those cold January nights, you lying on my lap in University, Fried Rice and Cold Drink in Chemistry Canteen, sneaking out just to spend a few stolen moments together. The taste of those burgers, the warmth of that Maggie nothing has ever tasted better. Because it was with you.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- February -->
+            <div class="timeline-item special" style="animation-delay: 0.2s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">💕</div>
+                    <div class="timeline-month">February</div>
+                    <div class="timeline-title">Our First Anniversary</div>
+                    <div class="timeline-desc">
+                      The Hazelnut Cafe** ☕🤍 — where you took me for the first time, my very first café ever, and it was with you ✨🥰
+
+                    </div>
+                    <div class="timeline-detail">
+                        One whole year of loving you. a year to where it started from ATB FOR THE EXAM. Our one year Anniversary. And ofcourse our anniversary on the exam day. But THF and that trio mousse the very next day... bhaisaaab.... I didn't know cafes could feel like home.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- March -->
+            <div class="timeline-item" style="animation-delay: 0.3s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">🎨</div>
+                    <div class="timeline-month">March</div>
+                    <div class="timeline-title">Bhaijaaan Holi Mubarak</div>
+                    <div class="timeline-desc">
+                        14th March — First Holi gulaal on your cheeks, gifted by me 🌸🎨💗 — a little color, a lot of love, and a forever memory ✨🥰
+                    </div>
+                    <div class="timeline-detail">
+                        That pink and yellow on your cheeks, your laughter echoing in my ears. I remember thinking — I want to celebrate every Holi with you for the rest of my life.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- April -->
+            <div class="timeline-item" style="animation-delay: 0.4s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">🌷</div>
+                    <div class="timeline-month">April</div>
+                    <div class="timeline-title">Growing Closer</div>
+                    <div class="timeline-desc">
+                        11th April — Our First Shower Together 🚿💞✨ <br>
+22nd April — Our first movie date together 🎬❤️ — “O shera uth zara te fir ohi halwa khila apnaaa”😄🍿✨<br>
+26th April — Explored a new café, remember? ROASTERYYYY ☕✨ — good coffee, bestest garlic bread🚆🤍
+
+
+                    </div>
+                    <div class="timeline-detail">
+                        April was gentle. We didn't need grand gestures just each other's presence was enough.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- May -->
+            <div class="timeline-item special" style="animation-delay: 0.5s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">⭐</div>
+                    <div class="timeline-month">May</div>
+                    <div class="timeline-title">My First Recommendation + MMA Found Out</div>
+                    <div class="timeline-desc">
+                        2nd May — Recommended from 4 AFSB 🇮🇳✨ “Mujhe 100% mtlb ekdum full pata tha ki tera ho jaayega” 🥹❤️
+Hayeee… your words stayed with me, forever 💫 And that mmy sey chupkr Mandir ki daanpeti me pese daalna🫶
+                    </div>
+                    <div class="timeline-detail">
+                        Such a huge moment in my life 🌟 getting the first RECOMMENDATION because of YOUU 🫶, and that lesson of HONESTY you gave me stayed forever 🤍. 
+Ghar pe bhi sab pata chal gaya tha 🏠 kitna tough time tha na woh… hiding, fear, emotions sab kuch. 
+But phir dheere-dheere cheezein easy hoti gayi ✨ — no more hiding, no more pretending.
+We were becoming official in ways that truly mattered ❤️. 
+It took guts, but I proudly confessed in front of the moms 🧿🙏.
+And remember? I purchased and tasted my life’s first sip of beer 🍺😄 — and we started our gym journey together 💪🔥. 
+
+
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- June -->
+            <div class="timeline-item special" style="animation-delay: 0.6s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">💔</div>
+                    <div class="timeline-month">June</div>
+                    <div class="timeline-title">The Start of Our Long Distance</div>
+                    <div class="timeline-desc">
+11th June — I can’t get that view off my eyes, you crying at that print shop… I was leaving in 2 days 💔🥺🖨️ I Love you ❤️🫶 <br> 
+12th June — jaane se pehle ki woh shaam, yaad hai? Humne saath me darshan kiye the **Hanumant Dham** 🛕🙏 — and somehow, despite all odds, they kept us together 🤍✨🧿<br>
+13th June — we started our LDR journey 🌍💞✨ — kitna royi thi tu uss subah 💔🥺, aur Banaras jaate time bhi… bby, your eyes were so swollen 😭🚆❤️ <br>
+27th June — returned from Delhi within just 2 weeks because I couldn’t live without you 🥺❤️, and we had our first **chai & bun makkhan** together at Lalli Chai ☕🥯🫶✨
+
+
+                    </div>
+                    <div class="timeline-detail">
+                     This was hard… really hard 💔🥺.But we promised each other 🤞❤️ — distance is just a test, and we were going to pass it *together* 🌍✨.Every video call 📱💞, every late-night text 🌙💬 — we made it work 🫶. Aur yaad hai? I gave you my hand impression ✋🤍 — coffee-stamped palm with proper outlining ☕🖤, a piece of me with you forever 🧿💫
+
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- July -->
+            <div class="timeline-item" style="animation-delay: 0.7s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">🤗</div>
+                    <div class="timeline-month">July</div>
+                    <div class="timeline-title">First Long Distance Surprise</div>
+                    <div class="timeline-desc">
+
+10th July — surprise hugs in the gym 🤗💪✨, you didn’t see it coming 🥹❤️ pehli serious fight hui thi, and I came running to you the very next day 🏃‍♂️💞… pixshu of my words, hmm 🫶💭
+                    </div>
+                    <div class="timeline-detail">
+                        That look on your face when I showed up... I'd travel a thousand miles again just to see that expression. LDR could never keep us apart, Betuu.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- August -->
+            <div class="timeline-item" style="animation-delay: 0.8s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">🏠</div>
+                    <div class="timeline-month">August</div>
+                    <div class="timeline-title">First Solo Stay at Your Home</div>
+                    <div class="timeline-desc">
+                        Came from Delhi. Stayed at your place for 3 days and 2 nights.Things weren't fine but we released the stress in a way that no one ever knew.
+                    </div>
+                    <div class="timeline-detail">
+                        Someone gifted me a lotttttt from ZUDIO. And things that I wore almost my entire summers.             </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- September -->
+            <div class="timeline-item" style="animation-delay: 0.9s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">🍂</div>
+                    <div class="timeline-month">September</div>
+                    <div class="timeline-title">GANNU BAPPA RETURNS🐘🙏🪔🌸🧿
+</div>
+                    <div class="timeline-desc">
+                        Gannu Bappa came. Took away many negatives and gave some positives too. <br>
+25th September — came to Lucknow without anyone knowing 🤫🚆, and returned within just 5 hours jisme we spend somewhat 2 hrs together ⏳💔❤️
+                    </div>
+                    <div class="timeline-detail">
+                        September felt long. But we held on, knowing the best months were just around the corner.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- October -->
+            <div class="timeline-item special" style="animation-delay: 1.0s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">🪔</div>
+                    <div class="timeline-month">October</div>
+                    <div class="timeline-title">Secret NIGHTSTAY & Our First Festival Together</div>
+                    <div class="timeline-desc">
+6th & 7th October — I came to Lucknow, and no one knew I’d be spending the night at your place 🤫🌙❤️.
+You had a night full of The Hazelnut Cafe treats ☕🍰✨, and after so, so long, we finally had close cuddles and peaceful sleep together 🤍🥺🫶 <br>
+
+                        20th October — from “humaara pehla festival saath tha aur ye yahan se chala gaya”🥺💔 to **matching our traditional outfits together and having a Diwali Dinner and Gulabjamun together 🪔✨👫❤️ <br>
+
+                    </div>
+                    <div class="timeline-detail">
+                        We were not as much interested October rather more excited for our Trip together.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- November -->
+            <div class="timeline-item special" style="animation-delay: 1.1s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">✈️</div>
+                    <div class="timeline-month">November</div>
+                    <div class="timeline-title">OUR FIRST TRIP TOGETHER</div>
+                    <div class="timeline-desc">
+                    7th–10th November — the first memory for life 🥹❤️ KASHI trip yaaaar ✨🛕🌊 — the city we’ll visit again and again and *never* get tired of ♾️💫🧿
+
+                    </div>
+                    <div class="timeline-detail">
+                        This trip changed everything 💛✨.
+Every street we walked 🚶‍♂️🚶‍♀️, every meal we shared 🍽️🤍, every laugh 😄💞, every step together along the ghats 👣, both the aartis we witnessed at Dashashwamedh Ghat🪔🌊 and that mini Mahakal temple by the river bank 🕉️🐚🌊 — it’s all etched in my heart forever 🧿❤️.
+We have to go back, Betuu 🥹♾️✨.
+
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+
+            <!-- December -->
+            <div class="timeline-item special" style="animation-delay: 1.2s;">
+                <div class="timeline-content" onclick="toggleDetail(this)">
+                    <div class="timeline-emoji">❄️</div>
+                    <div class="timeline-month">December</div>
+                    <div class="timeline-title">16 Days That Felt Like 16 Hours</div>
+                    <div class="timeline-desc">
+                        20th December — Science City trip 🔬✨, tu khargosh ko khila rahi thi 🐰🥕, main gir gaya tha 🤕😂, aur tu hass rahi thi huh 😆❤️ <br>
+22nd December — mere bachche ka birthday 🎂🥹❤️, and especially that homemade cake 🍰✨ & handmade chocolate box 🍫🤍 which I made and bought with all my heart and you loved them the most 🫶💖
+
+
+                    </div>
+                    <div class="timeline-detail">
+                        The longest I stayed home since LDR yet every moment flew by way too fast.16 whole days with you. Waking up knowing I'd see you, sleeping knowing tomorrow I'd see you again. It still wasn't enough. It never will be. But that's okay — because now we have 2026.
+                    </div>
+                    <p class="tap-hint">tap to read more</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auth check
+        if(sessionStorage.getItem('authenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Inactivity logout
+        let lastActivity = Date.now();
+        setInterval(() => {
+            if(Date.now() - lastActivity > 5 * 60 * 1000) {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }, 10000);
+        document.addEventListener('mousemove', () => lastActivity = Date.now());
+        document.addEventListener('click', () => lastActivity = Date.now());
+        document.addEventListener('scroll', () => lastActivity = Date.now());
+
+        function toggleDetail(element) {
+            element.classList.toggle('expanded');
+            const hint = element.querySelector('.tap-hint');
+            if(element.classList.contains('expanded')) {
+                hint.textContent = 'tap to collapse';
+            } else {
+                hint.textContent = 'tap to read more';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #1a1a2e;
+            font-family: 'Quicksand', sans-serif;
+            color: #eee;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #E8C9A0;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        .login-section {
+            max-width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .login-section input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: #252540;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .login-section input:focus {
+            outline: none;
+            border-color: #E8C9A0;
+        }
+
+        .login-section button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #E8C9A0, #D4A574);
+            border: none;
+            border-radius: 10px;
+            color: #1a1a2e;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .login-section button:hover {
+            transform: translateY(-2px);
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .section {
+            background: #252540;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            color: #E8C9A0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .control-row:last-child {
+            border-bottom: none;
+        }
+
+        .control-label {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #333;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle.active {
+            background: #4CAF50;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle.active::after {
+            transform: translateX(24px);
+        }
+
+        .password-section input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #1a1a2e;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .password-section button {
+            padding: 10px 20px;
+            background: #E8C9A0;
+            border: none;
+            border-radius: 8px;
+            color: #1a1a2e;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Edit Request Section */
+        .edit-request-section textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: #1a1a2e;
+            color: #fff;
+            font-size: 14px;
+            font-family: 'Quicksand', sans-serif;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .edit-request-section textarea:focus {
+            outline: none;
+            border-color: #E8C9A0;
+        }
+
+        .edit-request-section button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #E8C9A0, #D4A574);
+            border: none;
+            border-radius: 8px;
+            color: #1a1a2e;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .edit-request-section button:hover {
+            transform: translateY(-2px);
+        }
+
+        .saved-requests {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #333;
+        }
+
+        .saved-requests h3 {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .request-item {
+            background: #1a1a2e;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #E8C9A0;
+        }
+
+        .request-item .timestamp {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .request-item .content {
+            font-size: 13px;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .request-item .delete-btn {
+            margin-top: 10px;
+            padding: 5px 12px;
+            background: #ff4444;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* Reset Access Section */
+        .danger-zone {
+            background: #2e1a1a;
+            border-color: #4a2020;
+        }
+
+        .danger-zone h2 {
+            color: #ff6b6b;
+        }
+
+        .danger-btn {
+            padding: 10px 20px;
+            background: #ff4444;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .success-msg {
+            color: #4CAF50;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #252540;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            color: #E8C9A0;
+            font-weight: 600;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Admin Login -->
+        <div class="login-section" id="adminLogin">
+            <h1>🔐 Admin Access</h1>
+            <p class="subtitle">Only Parikshit can enter here</p>
+            <input type="password" id="adminPass" placeholder="Enter admin password...">
+            <button onclick="adminLogin()">Access Panel</button>
+            <p class="error-msg" id="adminError" style="color: #ff6b6b; margin-top: 15px; display: none;">Wrong password!</p>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="adminPanel">
+            <h1>⚙️ Admin Panel</h1>
+            <p class="subtitle">Control everything from here, Parikshit</p>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-value">25</div>
+                    <div class="stat-label">Photos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Timeline Moments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Letters & Notes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="visitCount">0</div>
+                    <div class="stat-label">Her Visits</div>
+                </div>
+            </div>
+
+            <!-- Section Controls -->
+            <div class="section">
+                <h2>📂 Section Visibility</h2>
+                <div class="control-row">
+                    <span class="control-label">Gallery</span>
+                    <div class="toggle active" onclick="toggleSection(this, 'gallery')"></div>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Timeline</span>
+                    <div class="toggle active" onclick="toggleSection(this, 'timeline')"></div>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Letters</span>
+                    <div class="toggle active" onclick="toggleSection(this, 'letters')"></div>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">2026 Message</span>
+                    <div class="toggle active" onclick="toggleSection(this, 'message2026')"></div>
+                </div>
+            </div>
+
+            <!-- Edit Requests -->
+            <div class="section edit-request-section">
+                <h2>📝 Edit Requests</h2>
+                <p style="color: #888; font-size: 13px; margin-bottom: 15px;">
+                    Write what you want to change. Copy these later and tell your AI assistant to make the edits.
+                </p>
+                <textarea id="editRequest" placeholder="Example: Change the main letter closing to 'Forever yours, P'
+
+Or: Add a new timeline moment for September - 'Started preparing for something big'
+
+Or: Replace photo 5 with a new one from our trip..."></textarea>
+                <button onclick="saveRequest()">💾 Save Edit Request</button>
+
+                <div class="saved-requests">
+                    <h3>📋 Your Saved Requests</h3>
+                    <div id="requestsList"></div>
+                </div>
+            </div>
+
+            <!-- Password Change -->
+            <div class="section password-section">
+                <h2>🔑 Change Site Password</h2>
+                <input type="password" id="newPassword" placeholder="New password for Aditi...">
+                <button onclick="changePassword()">Update Password</button>
+                <p class="success-msg" id="passSuccess">Password updated! (Remember to update index.html)</p>
+            </div>
+
+            <!-- Aditi Edit Access -->
+            <div class="section">
+                <h2>✏️ Aditi's Edit Access</h2>
+                <div class="control-row">
+                    <span class="control-label">Allow Aditi to edit content</span>
+                    <div class="toggle" id="aditiEditToggle" onclick="toggleAditiEdit(this)"></div>
+                </div>
+                <p style="color: #666; font-size: 12px; margin-top: 10px;">
+                    When enabled, Aditi will see an "Edit" button on pages. Currently: <strong id="aditiEditStatus">Disabled</strong>
+                </p>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="section danger-zone">
+                <h2>⚠️ Danger Zone</h2>
+                <button class="danger-btn" onclick="resetBlockedAccess()">Reset Blocked Access</button>
+                <button class="danger-btn" onclick="clearAllData()">Clear All Local Data</button>
+                <p style="color: #888; font-size: 12px; margin-top: 15px;">
+                    "Reset Blocked Access" — If someone got blocked after wrong passwords, this will let them try again.<br>
+                    "Clear All Data" — Resets everything including hearts, visits count, etc.
+                </p>
+            </div>
+
+            <!-- Instructions -->
+            <div class="section">
+                <h2>📖 How To Make Changes</h2>
+                <div style="color: #aaa; font-size: 14px; line-height: 1.8;">
+                    <p><strong>To add photos:</strong></p>
+                    <ol style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Create a folder called "photos" in your website directory</li>
+                        <li>Name your photos: photo1.jpg, photo2.jpg, ... photo25.jpg</li>
+                        <li>In gallery.html, the placeholders will automatically show your photos</li>
+                    </ol>
+                    
+                    <p><strong>To add music:</strong></p>
+                    <ol style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Create a folder called "audio" in your website directory</li>
+                        <li>Add the Noormahal instrumental as "noormahal.mp3"</li>
+                    </ol>
+                    
+                    <p><strong>To edit text:</strong></p>
+                    <ol style="margin-left: 20px;">
+                        <li>Write your edit request above</li>
+                        <li>Open the relevant HTML file</li>
+                        <li>Find the text and change it directly</li>
+                        <li>Or ask your AI assistant to help!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = 'Parikshit@admin2025';
+
+        // Check if already logged in
+        if(sessionStorage.getItem('adminAuth') === 'true') {
+            showAdminPanel();
+        }
+
+        function adminLogin() {
+            const entered = document.getElementById('adminPass').value;
+            if(entered === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminAuth', 'true');
+                showAdminPanel();
+            } else {
+                document.getElementById('adminError').style.display = 'block';
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminPanel').classList.add('active');
+            loadRequests();
+            loadStats();
+        }
+
+        function toggleSection(el, section) {
+            el.classList.toggle('active');
+            const isActive = el.classList.contains('active');
+            localStorage.setItem('section_' + section, isActive);
+        }
+
+        function toggleAditiEdit(el) {
+            el.classList.toggle('active');
+            const isActive = el.classList.contains('active');
+            localStorage.setItem('aditiCanEdit', isActive);
+            document.getElementById('aditiEditStatus').textContent = isActive ? 'Enabled' : 'Disabled';
+        }
+
+        // Load Aditi edit status
+        if(localStorage.getItem('aditiCanEdit') === 'true') {
+            document.getElementById('aditiEditToggle').classList.add('active');
+            document.getElementById('aditiEditStatus').textContent = 'Enabled';
+        }
+
+        function saveRequest() {
+            const request = document.getElementById('editRequest').value.trim();
+            if(!request) return;
+
+            const requests = JSON.parse(localStorage.getItem('editRequests') || '[]');
+            requests.unshift({
+                id: Date.now(),
+                content: request,
+                timestamp: new Date().toLocaleString()
+            });
+            localStorage.setItem('editRequests', JSON.stringify(requests));
+            
+            document.getElementById('editRequest').value = '';
+            loadRequests();
+        }
+
+        function loadRequests() {
+            const requests = JSON.parse(localStorage.getItem('editRequests') || '[]');
+            const container = document.getElementById('requestsList');
+            
+            if(requests.length === 0) {
+                container.innerHTML = '<p style="color: #666; font-size: 13px;">No edit requests yet.</p>';
+                return;
+            }
+
+            container.innerHTML = requests.map(req => `
+                <div class="request-item">
+                    <div class="timestamp">${req.timestamp}</div>
+                    <div class="content">${req.content}</div>
+                    <button class="delete-btn" onclick="deleteRequest(${req.id})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteRequest(id) {
+            let requests = JSON.parse(localStorage.getItem('editRequests') || '[]');
+            requests = requests.filter(r => r.id !== id);
+            localStorage.setItem('editRequests', JSON.stringify(requests));
+            loadRequests();
+        }
+
+        function changePassword() {
+            const newPass = document.getElementById('newPassword').value;
+            if(newPass) {
+                localStorage.setItem('sitePassword', newPass);
+                document.getElementById('passSuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('passSuccess').style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function resetBlockedAccess() {
+            localStorage.removeItem('accessBlocked');
+            localStorage.removeItem('loginAttempts');
+            alert('Blocked access has been reset. User can try logging in again.');
+        }
+
+        function clearAllData() {
+            if(confirm('Are you sure? This will clear all saved data including hearts, visit counts, and edit requests.')) {
+                localStorage.clear();
+                alert('All data cleared.');
+                loadRequests();
+                loadStats();
+            }
+        }
+
+        function loadStats() {
+            const visits = localStorage.getItem('visitCount') || '0';
+            document.getElementById('visitCount').textContent = visits;
+        }
+
+        // Track visits (this would be called from welcome.html)
+        // localStorage.setItem('visitCount', parseInt(localStorage.getItem('visitCount') || 0) + 1);
+    </script>
+</body>
+</html>
